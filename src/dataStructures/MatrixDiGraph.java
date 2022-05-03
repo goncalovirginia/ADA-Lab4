@@ -6,10 +6,10 @@ import java.util.List;
 
 public class MatrixDiGraph implements DiGraph {
 	
-	private final int[][] adjacencies;
+	private final int[][] edges;
 	
 	public MatrixDiGraph(int numNodes) {
-		adjacencies = new int[numNodes][numNodes];
+		edges = new int[numNodes][numNodes];
 	}
 	
 	@Override
@@ -17,7 +17,7 @@ public class MatrixDiGraph implements DiGraph {
 		int inDegree = 0;
 		
 		for (int i = 0; i <= node; i++) {
-			inDegree += adjacencies[i][node];
+			inDegree += edges[i][node];
 		}
 		
 		return inDegree;
@@ -28,7 +28,7 @@ public class MatrixDiGraph implements DiGraph {
 		int outDegree = 0;
 		
 		for (int i = 0; i <= node; i++) {
-			outDegree += adjacencies[node][i];
+			outDegree += edges[node][i];
 		}
 		
 		return outDegree;
@@ -38,8 +38,8 @@ public class MatrixDiGraph implements DiGraph {
 	public Iterable<Integer> inAdjacentNodes(int node) {
 		List<Integer> inAdjacentNodes = new LinkedList<>();
 		
-		for (int i = 0; i <= node; i++) {
-			if (adjacencies[i][node] == 1) {
+		for (int i = 0; i < numNodes(); i++) {
+			if (edges[i][node] == 1) {
 				inAdjacentNodes.add(i);
 			}
 		}
@@ -51,8 +51,8 @@ public class MatrixDiGraph implements DiGraph {
 	public Iterable<Integer> outAdjacentNodes(int node) {
 		List<Integer> outAdjacentNodes = new LinkedList<>();
 		
-		for (int i = 0; i <= node; i++) {
-			if (adjacencies[node][i] == 1) {
+		for (int i = 0; i < numNodes(); i++) {
+			if (edges[node][i] == 1) {
 				outAdjacentNodes.add(i);
 			}
 		}
@@ -65,7 +65,7 @@ public class MatrixDiGraph implements DiGraph {
 		List<Edge> inAdjacentNodes = new LinkedList<>();
 		
 		for (int i = 0; i <= node; i++) {
-			if (adjacencies[i][node] == 1) {
+			if (edges[i][node] == 1) {
 				inAdjacentNodes.add(new EdgeClass(i, node));
 			}
 		}
@@ -78,7 +78,7 @@ public class MatrixDiGraph implements DiGraph {
 		List<Edge> outAdjacentNodes = new LinkedList<>();
 		
 		for (int i = 0; i <= node; i++) {
-			if (adjacencies[node][i] == 1) {
+			if (edges[node][i] == 1) {
 				outAdjacentNodes.add(new EdgeClass(node, i));
 			}
 		}
@@ -88,7 +88,7 @@ public class MatrixDiGraph implements DiGraph {
 	
 	@Override
 	public int numNodes() {
-		return adjacencies.length;
+		return edges.length;
 	}
 	
 	@Override
@@ -103,12 +103,12 @@ public class MatrixDiGraph implements DiGraph {
 	
 	@Override
 	public void addEdge(int node1, int node2) {
-		adjacencies[node1][node2] = 1;
+		edges[node1][node2] = 1;
 	}
 	
 	@Override
 	public boolean edgeExists(int node1, int node2) {
-		return adjacencies[node1][node2] == 1;
+		return edges[node1][node2] == 1;
 	}
 	
 	@Override

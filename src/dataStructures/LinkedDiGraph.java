@@ -1,40 +1,68 @@
 package dataStructures;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 public class LinkedDiGraph implements DiGraph {
+	
+	private final List<List<Integer>> successors, predecessors;
+	
+	public LinkedDiGraph(int numNodes) {
+		successors = new ArrayList<>(numNodes);
+		predecessors = new ArrayList<>(numNodes);
+		
+		for (int i = 0; i < numNodes; i++) {
+			successors.add(new LinkedList<>());
+			predecessors.add(new LinkedList<>());
+		}
+	}
 	
 	@Override
 	public int inDegree(int node) {
-		return 0;
+		return predecessors.get(node).size();
 	}
 	
 	@Override
 	public int outDegree(int node) {
-		return 0;
+		return successors.get(node).size();
 	}
 	
 	@Override
 	public Iterable<Integer> inAdjacentNodes(int node) {
-		return null;
+		return predecessors.get(node);
 	}
 	
 	@Override
 	public Iterable<Integer> outAdjacentNodes(int node) {
-		return null;
+		return successors.get(node);
 	}
 	
 	@Override
 	public Iterable<Edge> inIncidentEdges(int node) {
-		return null;
+		List<Edge> inAdjacentNodes = new LinkedList<>();
+		
+		for (int predecessor : predecessors.get(node)) {
+			inAdjacentNodes.add(new EdgeClass(predecessor, node));
+		}
+		
+		return inAdjacentNodes;
 	}
 	
 	@Override
 	public Iterable<Edge> outIncidentEdges(int node) {
-		return null;
+		List<Edge> outAdjacentNodes = new LinkedList<>();
+		
+		for (int successor : successors.get(node)) {
+			outAdjacentNodes.add(new EdgeClass(node, successor));
+		}
+		
+		return outAdjacentNodes;
 	}
 	
 	@Override
 	public int numNodes() {
-		return 0;
+		return successors.size();
 	}
 	
 	@Override
@@ -49,7 +77,8 @@ public class LinkedDiGraph implements DiGraph {
 	
 	@Override
 	public void addEdge(int node1, int node2) {
-	
+		successors.get(node1).add(node2);
+		predecessors.get(node2).add(node1);
 	}
 	
 	@Override
@@ -59,7 +88,13 @@ public class LinkedDiGraph implements DiGraph {
 	
 	@Override
 	public Iterable<Integer> nodes() {
-		return null;
+		List<Integer> nodes = new ArrayList<>(numNodes());
+		
+		for (int i = 0; i < numNodes(); i++) {
+			nodes.add(i);
+		}
+		
+		return nodes;
 	}
 	
 	@Override
